@@ -1,0 +1,21 @@
+language: php
+
+matrix:
+  include:
+    - php: 7.3
+      env: setup=performances
+    - php: 7.3
+      env: setup=no-performances
+
+cache:
+  apt: true
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - travis_retry composer update --prefer-dist --no-interaction --no-suggest
+  - php seed.php
+
+script:
+  - if [[ $setup = 'no-performances' ]]; then ./vendor/bin/phpunit --exclude-group performances; fi
+  - if [[ $setup = 'performances' ]]; then ./vendor/bin/phpunit --group performances; fi

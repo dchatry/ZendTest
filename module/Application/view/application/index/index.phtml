@@ -1,0 +1,9 @@
+<div class="jumbotron">
+
+    <?php
+    $this->headScript()->appendFile('https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js');
+    $this->inlineScript()->appendFile($this->basePath('js/chart.js'));
+    ?>
+
+    <canvas id="hits" width="400" height="200" data-hits="<?= htmlspecialchars(json_encode($hits)) ?>"></canvas>
+</div>
