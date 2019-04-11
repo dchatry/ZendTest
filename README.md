@@ -11,6 +11,7 @@ To run the app locally, use [composer](https://getcomposer.org/):
 git clone https://github.com/<your-username>/ZendTest
 cd ZendTest
 composer install
+php seed.php
 composer serve
 ```
 
