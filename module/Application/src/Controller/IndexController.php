@@ -10,19 +10,31 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
-{
-    public function indexAction()
-    {
-        $hits = [
-            '2019-06-01' => 6,
-            '2019-06-02' => 8,
-            '2019-06-03' => 7,
-            '2019-06-04' => 10,
-        ];
+class IndexController extends AbstractActionController {
+  public function indexAction() {
+    $hits = [];
 
-        return new ViewModel([
-            'hits' => $hits,
-        ]);
+    $log_dir = getcwd() . '/data/cache/';
+    $files = scandir($log_dir);
+
+    // Loop through log files.
+    foreach ($files as $file) {
+      $file_parts = pathinfo($file);
+      if ($file_parts['extension'] === 'log') {
+        // We know that each line is composed of
+        // 46 characters + 1 newline so we can
+        // deduce the line count from the filesize.
+        $hit_count = filesize($log_dir . $file) / 47;
+
+        // Filename contains day for data.
+        $day = $file_parts['filename'];
+
+        $hits[$day] = $hit_count;
+      }
     }
+
+    return new ViewModel([
+      'hits' => $hits,
+    ]);
+  }
 }
